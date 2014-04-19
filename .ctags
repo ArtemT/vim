@@ -1,0 +1,12 @@
+# Basic options
+--recurse=yes
+--tag-relative=yes
+--exclude=.git
+
+# PHP
+--langmap=php:.engine.inc.module.theme.install.php --PHP-kinds=+cf-v
+
+# Symfony's Twig (http://knplabs.com/blog/2011/11/30/boost-your-productivity-with-sf2-and-vim)
+--extra=+f
+--langdef=file
+--langmap=file:.html.twig.xml.yml
