@@ -3,6 +3,10 @@ filetype off
 filetype plugin on
 filetype plugin indent on
 
+if &term == "xterm"
+  set term=xterm-256color
+endif
+
 "<!-- https://github.com/scrooloose/vimfiles/blob/master/vimrc
 
 "allow backspacing over everything in insert mode
@@ -13,9 +17,6 @@ set history=1000
 
 set showcmd     "show incomplete cmds down the bottom
 set showmode    "show current mode down the bottom
-
-set number      "show line numbers
-highlight LineNr ctermfg=236 ctermbg=234
 
 "display tabs and trailing spaces
 set list
@@ -309,13 +310,6 @@ autocmd BufReadPost fugitive://*
 
 "-->
 
-let g:airline_detect_modified=1
-let g:airline_detect_paste=1
-let g:airline_detect_iminsert=0
-let g:airline_inactive_collapse=1
-let g:airline_theme='laederon'
-let g:airline_powerline_fonts=1
-let g:airline#extensions#tabline#enabled = 1
 set timeout timeoutlen=1500 ttimeoutlen=50
 set noshowmode
 
@@ -327,6 +321,7 @@ Bundle 'gmarik/vundle'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/syntastic'
+Bundle 'jlanzarotta/bufexplorer'
 Bundle 'majutsushi/tagbar'
 Bundle 'kien/ctrlp.vim'
 Bundle 'tpope/vim-fugitive'
@@ -368,29 +363,55 @@ autocmd BufEnter *Controller.php nmap <buffer><leader>v :SfJumpToView<CR>
 "-->
 
 " Cursor colors
-if &term =~ "xterm\\|rxvt"
-  " use an orange cursor in insert mode
-  let &t_SI = "\<Esc>]12;orange\x7"
-  " use a red cursor otherwise
-  let &t_EI = "\<Esc>]12;red\x7"
-  silent !echo -ne "\033]12;red\007"
-  " reset cursor when vim exits
-  autocmd VimLeave * silent !echo -ne "\033]112\007"
-  " use \003]12;gray\007 for gnome-terminal
-endif
+"if &term =~ "xterm\\|rxvt"
+  "" use an orange cursor in insert mode
+  "let &t_SI = "\<Esc>]12;orange\x7"
+  "" use a red cursor otherwise
+  "let &t_EI = "\<Esc>]12;red\x7"
+  "silent !echo -ne "\033]12;red\007"
+  "" reset cursor when vim exits
+  "autocmd VimLeave * silent !echo -ne "\033]112\007"
+  "" use \003]12;gray\007 for gnome-terminal
+"endif
 
-if &term =~ '^xterm'
-  " solid underscore
-  let &t_SI .= "\<Esc>[4 q"
-  " solid block
-  let &t_EI .= "\<Esc>[2 q"
-  " 1 or 0 -> blinking block
-  " 3 -> blinking underscore
-  " Recent versions of xterm (282 or above) also support
-  " 5 -> blinking vertical bar
-  " 6 -> solid vertical bar
-endif
+"if &term =~ '^xterm'
+  "" solid underscore
+  "let &t_SI .= "\<Esc>[4 q"
+  "" solid block
+  "let &t_EI .= "\<Esc>[2 q"
+  "" 1 or 0 -> blinking block
+  "" 3 -> blinking underscore
+  "" Recent versions of xterm (282 or above) also support
+  "" 5 -> blinking vertical bar
+  "" 6 -> solid vertical bar
+"endif
 
 " Matching braskets
 highlight MatchParen cterm=bold ctermbg=22 ctermfg=46
 
+" Airline
+let g:airline_detect_modified=1
+let g:airline_detect_paste=1
+let g:airline_detect_iminsert=0
+let g:airline_inactive_collapse=1
+let g:airline_theme='laederon'
+let g:airline_powerline_fonts=1
+let g:airline#extensions#tabline#enabled = 1
+
+" Promptline
+let g:promptline_powerline_symbols = 1
+let g:promptline_symbols = {
+    \ 'dir_sep'        : '/',
+    \ 'truncation'     : '…'}
+let g:promptline_preset = {
+    \'a' : [ '\u' ],
+    \'b' : [ '\w' ],
+    \'c' : [ promptline#slices#vcs_branch(), promptline#slices#jobs() ],
+    \'warn' : [ promptline#slices#last_exit_code() ]}
+
+" Line numbers
+set number
+highlight LineNr ctermfg=236 ctermbg=234
+
+" Ruler
+highlight ColorColumn ctermbg=234
